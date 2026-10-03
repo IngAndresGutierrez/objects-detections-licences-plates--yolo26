@@ -1,0 +1,6 @@
+path: /Users/andresgutierrez/Projects/personal/objects-detections-licences-plates/data/yolo
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: plate
