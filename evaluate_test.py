@@ -35,13 +35,13 @@ STATUS_COLORS = {
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp"}
 
 
-def load_ground_truth(image_path, width, height):
+def load_ground_truth(image_path, width, height, labels_dir=TEST_LABELS):
     """
     Lee las etiquetas YOLO (clase cx cy w h normalizados)
     y las devuelve como cajas xyxy en píxeles.
     """
 
-    label_path = TEST_LABELS / f"{image_path.stem}.txt"
+    label_path = labels_dir / f"{image_path.stem}.txt"
 
     if not label_path.exists():
         return []
@@ -121,7 +121,7 @@ def match_predictions(predictions, ground_truth):
     return matches, false_negatives
 
 
-def draw_predictions(image, predictions, matches, ground_truth):
+def draw_predictions(image, predictions, matches, ground_truth, label="plate"):
     """
     Dibuja el GT (fino, cian) y las predicciones con su confianza:
     verde = acierto (TP), rojo = falso positivo (FP).
@@ -136,7 +136,7 @@ def draw_predictions(image, predictions, matches, ground_truth):
     for prediction, match in zip(predictions, matches):
         x1, y1, x2, y2 = map(int, prediction["box"])
         color = COLOR_TP if match is not None else COLOR_FP
-        text = f"plate {prediction['confidence']:.2f}"
+        text = f"{label} {prediction['confidence']:.2f}"
 
         cv2.rectangle(annotated, (x1, y1), (x2, y2), color, 2)
 
@@ -166,7 +166,8 @@ def draw_predictions(image, predictions, matches, ground_truth):
     return annotated
 
 
-def create_comparison(original, annotated, summary):
+def create_comparison(original, annotated, summary,
+                      confidence_threshold=CONFIDENCE_THRESHOLD):
     """
     Original sin marcas a la izquierda y la inferencia a la derecha.
     Los títulos y el resumen van en bandas fuera de las imágenes
@@ -191,7 +192,7 @@ def create_comparison(original, annotated, summary):
     footer_text = (
         f"{summary['image']} | {summary['status'].upper()} | "
         f"GT={summary['ground_truth']} TP={summary['tp']} "
-        f"FP={summary['fp']} FN={summary['fn']} | conf>={CONFIDENCE_THRESHOLD}"
+        f"FP={summary['fp']} FN={summary['fn']} | conf>={confidence_threshold}"
     )
     cv2.putText(footer, footer_text, (10, 24),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.55, (255, 255, 255), 1, cv2.LINE_AA)
@@ -209,7 +210,8 @@ def classify(number_predictions, false_positives, false_negatives):
     return "incorrecta"
 
 
-def write_gallery(output_dir, experiment, summaries, metrics):
+def write_gallery(output_dir, experiment, summaries, metrics,
+                  confidence_threshold=CONFIDENCE_THRESHOLD, intro=""):
     """
     Galería HTML estática: una tarjeta por imagen, agrupadas por estado.
     """
@@ -260,8 +262,9 @@ td {{ border: 1px solid #ccc; padding: 4px 10px; }}
 <body>
 <h1>Evaluación sobre test &mdash; {experiment}</h1>
 <p>Izquierda: imagen original sin marcas. Derecha: inferencia
-(conf &ge; {CONFIDENCE_THRESHOLD}). Verde = acierto (IoU &ge; {IOU_MATCH_THRESHOLD}),
+(conf &ge; {confidence_threshold}). Verde = acierto (IoU &ge; {IOU_MATCH_THRESHOLD}),
 rojo = falso positivo, cian fino = ground truth.</p>
+{intro}
 <table>{metric_rows}</table>
 {"".join(sections)}
 </body>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Evaluación test YOLOE yoloe-26s-seg.pt</title>
+<style>
+body { font-family: system-ui, sans-serif; margin: 24px; background: #f4f4f4; }
+figure { background: #fff; margin: 0 0 20px; padding: 8px; border-left: 6px solid #999; }
+figure.correcta { border-color: #00a000; }
+figure.incorrecta { border-color: #dc0000; }
+figure.sin_detecciones { border-color: #ff8c00; }
+img { max-width: 100%; display: block; }
+table { border-collapse: collapse; background: #fff; }
+td { border: 1px solid #ccc; padding: 4px 10px; }
+</style>
+</head>
+<body>
+<h1>Evaluación sobre test &mdash; YOLOE yoloe-26s-seg.pt</h1>
+<p>Izquierda: imagen original sin marcas. Derecha: inferencia
+(conf &ge; 0.02). Verde = acierto (IoU &ge; 0.5),
+rojo = falso positivo, cian fino = ground truth.</p>
+<p>YOLOE con prompt de texto <b>&laquo;number plate&raquo;</b>. Prompt (máx. AP50) y umbral (máx. F1) elegidos solo con validación y fijados antes de evaluar test.</p>
+<table><tr><td>model</td><td>yoloe-26s-seg.pt</td></tr><tr><td>selection_split</td><td>val</td></tr><tr><td>prompt</td><td>number plate</td></tr><tr><td>confidence_threshold</td><td>0.02</td></tr><tr><td>iou_match_threshold</td><td>0.5</td></tr><tr><td>image_size</td><td>640</td></tr><tr><td>val_at_selected</td><td>{'precision': 0.7273, 'recall': 0.9412, 'f1': 0.8205, 'tp': 16, 'fp': 6, 'fn': 1}</td></tr><tr><td>test_ap50</td><td>1.0</td></tr><tr><td>test_tp</td><td>7</td></tr><tr><td>test_fp</td><td>5</td></tr><tr><td>test_fn</td><td>0</td></tr><tr><td>test_precision</td><td>0.5833</td></tr><tr><td>test_recall</td><td>1.0</td></tr><tr><td>test_f1</td><td>0.7368</td></tr><tr><td>images_correctas</td><td>2</td></tr><tr><td>images_incorrectas</td><td>3</td></tr><tr><td>images_sin_detecciones</td><td>0</td></tr><tr><td>val AP50 &#x27;license plate&#x27;</td><td>0.6642</td></tr><tr><td>val AP50 &#x27;car license plate&#x27;</td><td>0.6767</td></tr><tr><td>val AP50 &#x27;number plate&#x27;</td><td>0.8612</td></tr><tr><td>val AP50 &#x27;vehicle registration plate&#x27;</td><td>0.8445</td></tr><tr><td>val AP50 &#x27;plate&#x27;</td><td>0.2139</td></tr><tr><td>val AP50 &#x27;car&#x27;</td><td>0.0</td></tr></table>
+<h2>Incorrecta (3)</h2>
+<figure class="incorrecta"><img src="comparisons/Cars70.png" loading="lazy"><figcaption><b>Cars70.png</b> &middot; GT 1 &middot; TP 1 &middot; FP 2 &middot; FN 0 &middot; conf máx 0.5053</figcaption></figure>
+<figure class="incorrecta"><img src="comparisons/Cars71.png" loading="lazy"><figcaption><b>Cars71.png</b> &middot; GT 2 &middot; TP 2 &middot; FP 2 &middot; FN 0 &middot; conf máx 0.8129</figcaption></figure>
+<figure class="incorrecta"><img src="comparisons/Cars73.png" loading="lazy"><figcaption><b>Cars73.png</b> &middot; GT 1 &middot; TP 1 &middot; FP 1 &middot; FN 0 &middot; conf máx 0.2382</figcaption></figure><h2>Correcta (2)</h2>
+<figure class="correcta"><img src="comparisons/Cars74.png" loading="lazy"><figcaption><b>Cars74.png</b> &middot; GT 1 &middot; TP 1 &middot; FP 0 &middot; FN 0 &middot; conf máx 0.2314</figcaption></figure>
+<figure class="correcta"><img src="comparisons/Cars81.png" loading="lazy"><figcaption><b>Cars81.png</b> &middot; GT 2 &middot; TP 2 &middot; FP 0 &middot; FN 0 &middot; conf máx 0.4151</figcaption></figure>
+</body>
+</html>

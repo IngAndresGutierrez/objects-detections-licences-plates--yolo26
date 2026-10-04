@@ -11,3 +11,6 @@ __pycache__/
 
 # Pesos / resultados de entrenamiento
 *.pt
+
+# Encoder de texto de YOLOE (se descarga automáticamente)
+*.ts

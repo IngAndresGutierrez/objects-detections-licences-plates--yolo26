@@ -1,0 +1,6 @@
+image,status,ground_truth,predictions,tp,fp,fn,max_confidence
+Cars70.png,incorrecta,1,3,1,2,0,0.5053
+Cars71.png,incorrecta,2,4,2,2,0,0.8129
+Cars73.png,incorrecta,1,2,1,1,0,0.2382
+Cars74.png,correcta,1,1,1,0,0,0.2314
+Cars81.png,correcta,2,2,2,0,0,0.4151
