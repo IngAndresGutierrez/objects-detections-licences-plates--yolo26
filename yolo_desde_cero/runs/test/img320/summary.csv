@@ -1,0 +1,6 @@
+image,status,ground_truth,predictions,tp,fp,fn,max_confidence
+Cars70.png,sin_detecciones,1,0,0,0,1,
+Cars71.png,sin_detecciones,2,0,0,0,2,
+Cars73.png,sin_detecciones,1,0,0,0,1,
+Cars74.png,sin_detecciones,1,0,0,0,1,
+Cars81.png,sin_detecciones,2,0,0,0,2,

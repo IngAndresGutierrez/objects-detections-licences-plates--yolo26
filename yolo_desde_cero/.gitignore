@@ -1,0 +1,2 @@
+# Se versionan los pesos finales de cada run (el .gitignore raíz excluye *.pt)
+!runs/train/*/weights/best.pt
