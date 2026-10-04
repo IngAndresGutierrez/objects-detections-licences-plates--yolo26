@@ -1,62 +1,33 @@
-from ultralytics import YOLO
-import platform
-import time
-import torch
+"""
+YOLO26n con FINE-TUNING desde pesos preentrenados en COCO (yolo26n.pt).
+Mismos hiperparámetros que yolo_scratch; solo cambia el punto de partida.
+
+Uso (desde la raíz del repo):
+    python -m yolo_pretrained.train --imgsz 416
+"""
+
+import argparse
+
+from common.dataset import WEIGHTS_DIR
+from common.training import train
 
 
 def main():
-    # Configuración
-    epochs = 50
-    image_size = 416
-    batch_size = 4
-    seed = 42
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--imgsz", type=int, default=416)
+    parser.add_argument("--epochs", type=int, default=None)
+    parser.add_argument("--name", default=None)
+    args = parser.parse_args()
 
-    print("=" * 60)
-    print("YOLO26n - fine-tuning desde pesos preentrenados (COCO)")
-    print("=" * 60)
-
-    print(f"Python hardware: {platform.machine()}")
-    print(f"CPU: {platform.processor()}")
-    print(f"PyTorch: {torch.__version__}")
-    print(f"Epochs: {epochs}")
-    print(f"Image size: {image_size}")
-    print(f"Batch size: {batch_size}")
-    print("Device: CPU")
-    print("Pretrained: True")
-    print("=" * 60)
-
-    # IMPORTANTE:
-    # .pt = arquitectura + pesos preentrenados en COCO
-    model = YOLO("yolo26n.pt")
-
-    start_time = time.time()
-
-    results = model.train(
-        data="data/yolo/dataset.yaml",
-
-        epochs=epochs,
-        imgsz=image_size,
-        batch=batch_size,
-
-        device="cpu",
-
+    train(
+        approach="yolo_pretrained",
+        # Se descarga automáticamente en weights/ si no existe
+        model_source=str(WEIGHTS_DIR / "yolo26n.pt"),
         pretrained=True,
-
-        seed=seed,
-        deterministic=True,
-
-        project="experiments",
-        name="exp02_pretrained_img416",
-
-        save=True,
-        plots=True,
+        image_size=args.imgsz,
+        name=args.name,
+        epochs=args.epochs,
     )
-
-    elapsed = time.time() - start_time
-
-    print("=" * 60)
-    print(f"Tiempo total: {elapsed / 60:.2f} minutos")
-    print("=" * 60)
 
 
 if __name__ == "__main__":

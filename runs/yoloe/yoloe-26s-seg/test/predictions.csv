@@ -1,0 +1,14 @@
+image,prompt,confidence,xmin,ymin,xmax,ymax,kept,result,iou_gt
+Cars70.png,number plate,0.5053,179.4,115.8,211.6,132.9,1,TP,0.8877
+Cars70.png,number plate,0.136,41.9,114.2,57.8,122.2,1,FP,
+Cars70.png,number plate,0.0605,41.4,113.7,62.9,122.7,1,FP,
+Cars71.png,number plate,0.8129,83.9,146.9,126.8,159.3,1,TP,0.768
+Cars71.png,number plate,0.6689,255.7,144.4,282.7,151.8,1,TP,0.8981
+Cars71.png,number plate,0.1971,249.9,126.4,286.4,137.7,1,FP,
+Cars71.png,number plate,0.0257,250.4,127.4,267.5,137.0,1,FP,
+Cars73.png,number plate,0.2382,120.2,25.7,281.4,65.4,1,TP,0.7873
+Cars73.png,number plate,0.0292,122.8,41.1,280.0,65.1,1,FP,
+Cars73.png,number plate,0.0142,186.7,43.8,278.0,64.1,0,,
+Cars74.png,number plate,0.2314,114.6,117.5,268.9,153.0,1,TP,0.8204
+Cars81.png,number plate,0.4151,294.6,102.0,328.4,122.6,1,TP,0.7783
+Cars81.png,number plate,0.4064,33.6,89.0,61.6,107.8,1,TP,0.8031

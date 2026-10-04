@@ -1,0 +1,30 @@
+{
+  "approach": "yolo_pretrained",
+  "run": "img416",
+  "model": "runs/yolo_pretrained/train/img416/weights/best.pt",
+  "image_size": 416,
+  "selection_split": "val",
+  "selection_criterion": "max val mAP50-95",
+  "val_candidates": {
+    "img416": {
+      "epoch": 49,
+      "val_mAP50": 0.91324,
+      "val_mAP50-95": 0.55348
+    }
+  },
+  "ultralytics_test_mAP50": 0.8735,
+  "ultralytics_test_mAP50-95": 0.5878,
+  "confidence_threshold": 0.25,
+  "iou_match_threshold": 0.5,
+  "test_images": 5,
+  "test_ap50": 0.812,
+  "test_tp": 6,
+  "test_fp": 5,
+  "test_fn": 1,
+  "test_precision": 0.5455,
+  "test_recall": 0.8571,
+  "test_f1": 0.6667,
+  "images_correctas": 2,
+  "images_incorrectas": 3,
+  "images_sin_detecciones": 0
+}

@@ -1,0 +1,24 @@
+{
+  "model": "yoloe-26s-seg.pt",
+  "selection_split": "val",
+  "prompt_criterion": "max val AP50",
+  "threshold_criterion": "max val F1 (IoU >= 0.5)",
+  "prompt": "number plate",
+  "confidence_threshold": 0.02,
+  "val_ap50_per_prompt": {
+    "license plate": 0.6642,
+    "car license plate": 0.6767,
+    "number plate": 0.8612,
+    "vehicle registration plate": 0.8445,
+    "plate": 0.2139,
+    "car": 0.0
+  },
+  "val_at_selected": {
+    "precision": 0.7273,
+    "recall": 0.9412,
+    "f1": 0.8205,
+    "tp": 16,
+    "fp": 6,
+    "fn": 1
+  }
+}

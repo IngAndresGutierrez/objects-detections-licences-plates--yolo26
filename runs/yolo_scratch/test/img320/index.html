@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Evaluación test yolo_scratch / img320</title>
+<style>
+body { font-family: system-ui, sans-serif; margin: 24px; background: #f4f4f4; }
+figure { background: #fff; margin: 0 0 20px; padding: 8px; border-left: 6px solid #999; }
+figure.correcta { border-color: #00a000; }
+figure.incorrecta { border-color: #dc0000; }
+figure.sin_detecciones { border-color: #ff8c00; }
+img { max-width: 100%; display: block; }
+table { border-collapse: collapse; background: #fff; }
+td { border: 1px solid #ccc; padding: 4px 10px; }
+</style>
+</head>
+<body>
+<h1>Evaluación sobre test &mdash; yolo_scratch / img320</h1>
+<p>Izquierda: imagen original sin marcas. Derecha: inferencia
+(conf &ge; 0.25). Verde = acierto (IoU &ge; 0.5),
+rojo = falso positivo, cian fino = ground truth.</p>
+
+<table><tr><td>approach</td><td>yolo_scratch</td></tr><tr><td>run</td><td>img320</td></tr><tr><td>model</td><td>runs/yolo_scratch/train/img320/weights/best.pt</td></tr><tr><td>image_size</td><td>320</td></tr><tr><td>selection_split</td><td>val</td></tr><tr><td>selection_criterion</td><td>max val mAP50-95</td></tr><tr><td>val_candidates</td><td>{&quot;img320&quot;: {&quot;epoch&quot;: 41, &quot;val_mAP50&quot;: 0.02873, &quot;val_mAP50-95&quot;: 0.00645}, &quot;img416&quot;: {&quot;epoch&quot;: 49, &quot;val_mAP50&quot;: 0.01168, &quot;val_mAP50-95&quot;: 0.00192}}</td></tr><tr><td>ultralytics_test_mAP50</td><td>0.0086</td></tr><tr><td>ultralytics_test_mAP50-95</td><td>0.0025</td></tr><tr><td>confidence_threshold</td><td>0.25</td></tr><tr><td>iou_match_threshold</td><td>0.5</td></tr><tr><td>test_images</td><td>5</td></tr><tr><td>test_ap50</td><td>0.0068</td></tr><tr><td>test_tp</td><td>0</td></tr><tr><td>test_fp</td><td>0</td></tr><tr><td>test_fn</td><td>7</td></tr><tr><td>test_precision</td><td>0.0</td></tr><tr><td>test_recall</td><td>0.0</td></tr><tr><td>test_f1</td><td>0.0</td></tr><tr><td>images_correctas</td><td>0</td></tr><tr><td>images_incorrectas</td><td>0</td></tr><tr><td>images_sin_detecciones</td><td>5</td></tr></table>
+<h2>Sin detecciones (5)</h2>
+<figure class="sin_detecciones"><img src="comparisons/Cars70.png" loading="lazy"><figcaption><b>Cars70.png</b> &middot; GT 1 &middot; TP 0 &middot; FP 0 &middot; FN 1 &middot; conf máx -</figcaption></figure>
+<figure class="sin_detecciones"><img src="comparisons/Cars71.png" loading="lazy"><figcaption><b>Cars71.png</b> &middot; GT 2 &middot; TP 0 &middot; FP 0 &middot; FN 2 &middot; conf máx -</figcaption></figure>
+<figure class="sin_detecciones"><img src="comparisons/Cars73.png" loading="lazy"><figcaption><b>Cars73.png</b> &middot; GT 1 &middot; TP 0 &middot; FP 0 &middot; FN 1 &middot; conf máx -</figcaption></figure>
+<figure class="sin_detecciones"><img src="comparisons/Cars74.png" loading="lazy"><figcaption><b>Cars74.png</b> &middot; GT 1 &middot; TP 0 &middot; FP 0 &middot; FN 1 &middot; conf máx -</figcaption></figure>
+<figure class="sin_detecciones"><img src="comparisons/Cars81.png" loading="lazy"><figcaption><b>Cars81.png</b> &middot; GT 2 &middot; TP 0 &middot; FP 0 &middot; FN 2 &middot; conf máx -</figcaption></figure>
+</body>
+</html>

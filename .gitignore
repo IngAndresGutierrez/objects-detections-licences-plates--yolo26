@@ -9,8 +9,14 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
-# Pesos / resultados de entrenamiento
-*.pt
-
-# Encoder de texto de YOLOE (se descarga automáticamente)
+# Pesos descargados (yolo26n.pt, yoloe-26s-seg.pt) y encoder de texto de YOLOE
+/weights/
 *.ts
+
+# Pesos de entrenamiento: solo se versionan los best.pt de los runs finales
+*.pt
+!runs/yolo_scratch/train/*/weights/best.pt
+!runs/yolo_pretrained/train/*/weights/best.pt
+
+# Cachés de Ultralytics (contienen rutas absolutas)
+*.cache
