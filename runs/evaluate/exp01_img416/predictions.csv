@@ -1,6 +1,6 @@
-image,detections,confidence,xmin,ymin,xmax,ymax
-Cars70.png,0,,,,,
-Cars71.png,0,,,,,
-Cars73.png,0,,,,,
-Cars74.png,0,,,,,
-Cars81.png,0,,,,,
+image,confidence,xmin,ymin,xmax,ymax,iou_gt,result
+Cars70.png,,,,,,,
+Cars71.png,,,,,,,
+Cars73.png,,,,,,,
+Cars74.png,,,,,,,
+Cars81.png,,,,,,,

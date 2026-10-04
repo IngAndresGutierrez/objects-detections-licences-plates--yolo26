@@ -1,0 +1,16 @@
+{
+  "model": "runs/detect/experiments/exp02_pretrained_img416-2/weights/best.pt",
+  "test_images": 5,
+  "confidence_threshold": 0.25,
+  "iou_match_threshold": 0.5,
+  "tp": 6,
+  "fp": 5,
+  "fn": 1,
+  "precision@conf": 0.5455,
+  "recall@conf": 0.8571,
+  "mAP50": 0.8735,
+  "mAP50-95": 0.5878,
+  "images_correctas": 2,
+  "images_incorrectas": 3,
+  "images_sin_detecciones": 0
+}
