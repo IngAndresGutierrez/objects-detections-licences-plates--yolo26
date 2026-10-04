@@ -10,5 +10,4 @@ __pycache__/
 .ipynb_checkpoints/
 
 # Pesos / resultados de entrenamiento
-runs/
 *.pt

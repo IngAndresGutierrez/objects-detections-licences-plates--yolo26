@@ -6,13 +6,13 @@ import torch
 
 def main():
     # Configuración
-    epochs = 5
-    image_size = 320
+    epochs = 50
+    image_size = 416
     batch_size = 4
     seed = 42
 
     print("=" * 60)
-    print("YOLO26n - entrenamiento desde cero")
+    print("YOLO26n - fine-tuning desde pesos preentrenados (COCO)")
     print("=" * 60)
 
     print(f"Python hardware: {platform.machine()}")
@@ -22,13 +22,12 @@ def main():
     print(f"Image size: {image_size}")
     print(f"Batch size: {batch_size}")
     print("Device: CPU")
-    print("Pretrained: False")
+    print("Pretrained: True")
     print("=" * 60)
 
     # IMPORTANTE:
-    # .yaml = arquitectura
-    # NO estamos cargando yolo26n.pt
-    model = YOLO("yolo26n.yaml")
+    # .pt = arquitectura + pesos preentrenados en COCO
+    model = YOLO("yolo26n.pt")
 
     start_time = time.time()
 
@@ -41,13 +40,13 @@ def main():
 
         device="cpu",
 
-        pretrained=False,
+        pretrained=True,
 
         seed=seed,
         deterministic=True,
 
         project="experiments",
-        name="smoke_test",
+        name="exp02_pretrained_img416",
 
         save=True,
         plots=True,
