@@ -1,0 +1,54 @@
+[project]
+name = "plate-detection"
+version = "0.1.0"
+description = "Detección de matrículas: YOLO desde cero, YOLO preentrenado y YOLOE"
+readme = "README.md"
+# numpy 1.26 no tiene wheels para 3.13
+requires-python = ">=3.12,<3.13"
+# Mismas versiones con las que se obtuvieron los resultados del README
+dependencies = [
+    "ultralytics==8.4.172",
+    "torch==2.8.0",
+    "torchvision==0.23.0",
+    "opencv-python==4.11.0.86",
+    "numpy==1.26.4",
+    "matplotlib==3.9.4",
+    "PyYAML==6.0.3",
+    # Solo para YOLOE (encoder de texto)
+    "ftfy==6.3.1",
+    "clip @ git+https://github.com/ultralytics/CLIP.git@a13192f8cb767260d7dfd98c843b0716593169e7",
+]
+
+[project.scripts]
+prepare-dataset = "plate_detection.data_prep.prepare_dataset:main"
+train-scratch = "plate_detection.yolo_scratch.train:main"
+train-pretrained = "plate_detection.yolo_pretrained.train:main"
+evaluate-test = "plate_detection.yolo_eval.evaluate_test:main"
+yoloe = "plate_detection.yoloe.open_vocab:main"
+compare = "plate_detection.compare:main"
+
+[tool.poetry]
+packages = [{ include = "plate_detection", from = "src" }]
+
+# torch/torchvision solo CPU (sin CUDA): imagen Docker mucho más ligera.
+# En macOS el wheel de PyPI ya es solo CPU/MPS; el índice CPU no tiene +cpu para Mac.
+# torchvision +cpu solo existe para x86_64/Windows; en Linux ARM (Docker en Mac M)
+# se usa el de PyPI, que solo depende de torch (que sí viene del índice CPU).
+[[tool.poetry.source]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+
+[tool.poetry.dependencies]
+torch = [
+    { markers = "sys_platform == 'darwin'", source = "pypi" },
+    { markers = "sys_platform != 'darwin'", source = "pytorch-cpu" },
+]
+torchvision = [
+    { markers = "sys_platform == 'win32' or (sys_platform == 'linux' and platform_machine == 'x86_64')", source = "pytorch-cpu" },
+    { markers = "sys_platform == 'darwin' or (sys_platform == 'linux' and platform_machine != 'x86_64')", source = "pypi" },
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
