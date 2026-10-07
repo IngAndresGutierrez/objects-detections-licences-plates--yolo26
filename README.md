@@ -5,30 +5,33 @@ dataset *Car License Plate* (imágenes `Cars*.png`). Se comparan tres enfoques:
 
 | # | Enfoque | Carpeta | Qué es |
 |---|---|---|---|
-| 1 | **YOLO desde cero** | [`yolo_scratch/`](yolo_scratch/) | YOLO26n definido por `yolo26n.yaml`, pesos aleatorios, entrenado con datos de cov |
-| 2 | **YOLO preentrenado** | [`yolo_pretrained/`](yolo_pretrained/) | YOLO26n con pesos COCO (`yolo26n.pt`) y *fine-tuning* entrenado con datos de cov |
-| 3 | **YOLOE** | [`yoloe/`](yoloe/) | Detector de vocabulario abierto: la clase se indica con texto, sin entrenar |
+| 1 | **YOLO desde cero** | [`yolo_scratch/`](src/plate_detection/yolo_scratch/) | YOLO26n definido por `yolo26n.yaml`, pesos aleatorios, entrenado con datos de cov |
+| 2 | **YOLO preentrenado** | [`yolo_pretrained/`](src/plate_detection/yolo_pretrained/) | YOLO26n con pesos COCO (`yolo26n.pt`) y *fine-tuning* entrenado con datos de cov |
+| 3 | **YOLOE** | [`yoloe/`](src/plate_detection/yoloe/) | Detector de vocabulario abierto: la clase se indica con texto, sin entrenar |
 
 ## Estructura
 
 ```
 .
 ├── README.md
-├── requirements.txt
-├── compare.py                    # tabla comparativa final en test
-├── common/                       # código compartido por los tres enfoques
-│   ├── dataset.py                # rutas, particiones, lectura de etiquetas
-│   ├── training.py               # hiperparámetros y bucle de entrenamiento (1 y 2)
-│   ├── inference.py              # inferencia guardando todas las cajas y puntuaciones
-│   ├── metrics.py                # IoU, emparejamiento, P/R/F1, AP50
-│   ├── visualization.py          # cajas, comparación original | predicción, galería
-│   └── report.py                 # guarda CSV, labels, imágenes, métricas y galería
-├── data_prep/
-│   └── prepare_dataset.py        # copia imágenes por partición, valida etiquetas, dataset.yaml
-├── yolo_scratch/train.py         # 1. entrenamiento desde cero
-├── yolo_pretrained/train.py      # 2. fine-tuning desde COCO
-├── yolo_eval/evaluate_test.py    # evaluación en test de 1 y 2
-├── yoloe/open_vocab.py           # 3. YOLOE: selección en val y evaluación en test
+├── pyproject.toml / poetry.lock  # dependencias (Poetry, Python 3.12, torch solo CPU)
+├── poetry.toml                   # el entorno virtual se crea en .venv/
+├── Dockerfile / docker-compose.yml / .dockerignore
+├── Makefile                      # atajos: make prepare, make evaluate, make compare...
+├── src/plate_detection/
+│   ├── common/                   # código compartido por los tres enfoques
+│   │   ├── dataset.py            # rutas, particiones, lectura de etiquetas
+│   │   ├── training.py           # hiperparámetros y bucle de entrenamiento (1 y 2)
+│   │   ├── inference.py          # inferencia guardando todas las cajas y puntuaciones
+│   │   ├── metrics.py            # IoU, emparejamiento, P/R/F1, AP50
+│   │   ├── visualization.py      # cajas, comparación original | predicción, galería
+│   │   └── report.py             # guarda CSV, labels, imágenes, métricas y galería
+│   ├── data_prep/prepare_dataset.py  # copia imágenes por partición, valida etiquetas, dataset.yaml
+│   ├── yolo_scratch/train.py     # 1. entrenamiento desde cero
+│   ├── yolo_pretrained/train.py  # 2. fine-tuning desde COCO
+│   ├── yolo_eval/evaluate_test.py    # evaluación en test de 1 y 2
+│   ├── yoloe/open_vocab.py       # 3. YOLOE: selección en val y evaluación en test
+│   └── compare.py                # tabla comparativa final en test
 ├── data/
 │   ├── voc/                      # dataset original (imágenes + anotaciones VOC, no usadas)
 │   └── yolo/
@@ -36,7 +39,7 @@ dataset *Car License Plate* (imágenes `Cars*.png`). Se comparan tres enfoques:
 │       ├── splits/{train,val,test}.txt   # lista de imágenes de cada partición
 │       ├── images/{train,val,test}/
 │       └── labels/{train,val,test}/      # anotación manual, formato YOLO
-├── weights/                      # (no versionado) pesos descargados automáticamente
+├── weights/                      # (no versionado) pesos y encoder de YOLOE, descargados solos
 └── runs/
     ├── yolo_scratch/
     │   ├── train/img320/  train/img416/   # curvas, results.csv, args.yaml, weights/best.pt
@@ -53,31 +56,61 @@ dataset *Car License Plate* (imágenes `Cars*.png`). Se comparan tres enfoques:
 
 ## Instalación
 
-Probado con **Python 3.9.6**, macOS, **CPU** (Apple M5).
+Hay dos opciones. En ambas se usa **solo CPU** y **Python 3.12**. Los resultados
+de este README se obtuvieron en macOS (Apple M5) y se reproducen igual en Docker.
+
+No hay que descargar nada a mano: `yolo26n.pt`, `yoloe-26s-seg.pt` y el encoder
+de texto de YOLOE (`mobileclip2_b.ts`, 242 MB) se descargan solos en `weights/`,
+que está en `.gitignore`.
+
+### Opción A: Poetry (local)
+
+Requiere [Poetry](https://python-poetry.org/docs/#installation) ≥ 2.0 y Python 3.12.
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+poetry env use python3.12   # solo la primera vez, si python3.12 no es el predeterminado
+poetry install              # crea .venv/ e instala dependencias y comandos
 ```
 
-Todos los comandos se ejecutan **desde la raíz del repo** con `python -m`. No hay
-que descargar nada a mano: `yolo26n.pt` y `yoloe-26s-seg.pt` se descargan solos
-en `weights/`, y el encoder de texto de YOLOE (`mobileclip2_b.ts`, 242 MB) en
-la raíz. Todos estos archivos están en `.gitignore`.
+### Opción B: Docker
+
+Requiere Docker con Compose. `data/`, `weights/` y `runs/` se montan como
+volúmenes, así que los resultados quedan en tu carpeta local.
+
+```bash
+docker compose build
+```
+
+Dentro de Docker no hay GPU ni MPS (en Mac). Todo corre en CPU, igual que los
+experimentos originales.
 
 ## Ejecución completa
 
+Cada paso es un comando del proyecto y funciona desde cualquier directorio.
+Con Poetry se lanza con `poetry run <comando>`; con Docker, con
+`docker compose run --rm app <comando>`.
+
 ```bash
-python -m data_prep.prepare_dataset              # 0. preparar y validar el dataset
-python -m yolo_scratch.train --imgsz 320         # 1. YOLO desde cero (~2 min en CPU)
-python -m yolo_scratch.train --imgsz 416
-python -m yolo_pretrained.train --imgsz 416      # 2. YOLO preentrenado (~3 min en CPU)
-python -m yolo_eval.evaluate_test yolo_scratch   #    evaluar en test (1)
-python -m yolo_eval.evaluate_test yolo_pretrained #    evaluar en test (2)
-python -m yoloe.open_vocab                       # 3. YOLOE: val -> test
-python compare.py                                #    tabla comparativa
+poetry run prepare-dataset                 # 0. preparar y validar el dataset
+poetry run train-scratch --imgsz 320       # 1. YOLO desde cero (~2 min en CPU)
+poetry run train-scratch --imgsz 416
+poetry run train-pretrained --imgsz 416    # 2. YOLO preentrenado (~3 min en CPU)
+poetry run evaluate-test yolo_scratch      #    evaluar en test (1)
+poetry run evaluate-test yolo_pretrained   #    evaluar en test (2)
+poetry run yoloe                           # 3. YOLOE: val -> test
+poetry run compare                         #    tabla comparativa
 ```
+
+Ejemplo con Docker:
+
+```bash
+docker compose run --rm app evaluate-test yolo_pretrained
+```
+
+El `Makefile` agrupa estos pasos (`make prepare`, `make train-scratch`,
+`make train-pretrained`, `make evaluate`, `make yoloe`, `make compare`,
+`make all`). Con `RUN=docker` se ejecutan en el contenedor, por ejemplo
+`make compare RUN=docker`.
 
 ---
 
@@ -104,7 +137,7 @@ usó un subconjunto de 55:
    anotaciones VOC originales **no se usan**: las cajas se dibujaron de nuevo.
    Están en `data/yolo/labels/<partición>/`.
 
-3. **Script** [`data_prep/prepare_dataset.py`](data_prep/prepare_dataset.py).
+3. **Script** [`data_prep/prepare_dataset.py`](src/plate_detection/data_prep/prepare_dataset.py).
    Copia cada imagen de `data/voc/images/` a su partición según las listas,
    comprueba que cada imagen tenga su etiqueta y que esta sea válida (5
    columnas, clase 0, coordenadas en [0, 1], ninguna imagen en dos
@@ -126,7 +159,7 @@ names:
 
 ### Parámetros de entrenamiento
 
-Están definidos en [`common/training.py`](common/training.py) y son **los mismos
+Están definidos en [`common/training.py`](src/plate_detection/common/training.py) y son **los mismos
 para el enfoque 1 y el 2**. Lo único que cambia es el modelo de partida. La
 lista completa de cada run está en su `args.yaml`.
 
@@ -150,7 +183,7 @@ lista completa de cada run está en su `args.yaml`.
 ### Pesos finales, registros y curvas
 
 El run final se elige **solo con validación**: el de mayor mAP50-95 en val. Lo
-hace `yolo_eval/evaluate_test.py`. Dentro del run, `best.pt` es la epoch con
+hace `src/plate_detection/yolo_eval/evaluate_test.py`. Dentro del run, `best.pt` es la epoch con
 mejor *fitness* en val según Ultralytics.
 
 | Run | Mejor epoch | val mAP50 | val mAP50-95 | |
@@ -231,7 +264,7 @@ Cada evaluación en test guarda, en `runs/<enfoque>/test/...`:
 
 Una predicción cuenta como acierto con IoU ≥ 0.5 (emparejamiento greedy por
 confianza). AP50 se calcula con interpolación de 101 puntos sobre todas las
-cajas guardadas (`python compare.py`):
+cajas guardadas (`poetry run compare`):
 
 | Enfoque | Configuración | Umbral | TP | FP | FN | Precisión | Recall | F1 | AP50 |
 |---|---|---|---|---|---|---|---|---|---|

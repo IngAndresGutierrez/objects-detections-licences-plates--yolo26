@@ -1,4 +1,4 @@
-# Entorno virtual
+# Entorno virtual (Poetry lo crea en .venv por poetry.toml)
 .venv/
 
 # macOS
@@ -9,7 +9,7 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
-# Pesos descargados (yolo26n.pt, yoloe-26s-seg.pt) y encoder de texto de YOLOE
+# Pesos descargados (yolo26n.pt, yoloe-26s-seg.pt) y encoder de texto de YOLOE (mobileclip2_b.ts)
 /weights/
 *.ts
 
