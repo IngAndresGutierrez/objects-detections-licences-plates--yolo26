@@ -1,0 +1,12 @@
+# Uso: docker compose run --rm app <comando> [args]
+#   docker compose run --rm app train-pretrained --imgsz 416
+services:
+  app:
+    build: .
+    image: plate-detection:latest
+    volumes:
+      - ./data:/app/data
+      - ./weights:/app/weights
+      - ./runs:/app/runs
+    # Los dataloaders de PyTorch usan memoria compartida
+    shm_size: 2gb
