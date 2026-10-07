@@ -2,14 +2,14 @@
 YOLO26n entrenado DESDE CERO: arquitectura definida en yolo26n.yaml,
 pesos inicializados aleatoriamente (sin COCO).
 
-Uso (desde la raíz del repo):
-    python -m yolo_scratch.train --imgsz 320
-    python -m yolo_scratch.train --imgsz 416
+Uso (desde cualquier directorio):
+    poetry run train-scratch --imgsz 320
+    poetry run train-scratch --imgsz 416
 """
 
 import argparse
 
-from common.training import train
+from plate_detection.common.training import train
 
 
 def main():

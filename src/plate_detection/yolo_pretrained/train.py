@@ -2,14 +2,14 @@
 YOLO26n con FINE-TUNING desde pesos preentrenados en COCO (yolo26n.pt).
 Mismos hiperparámetros que yolo_scratch; solo cambia el punto de partida.
 
-Uso (desde la raíz del repo):
-    python -m yolo_pretrained.train --imgsz 416
+Uso (desde cualquier directorio):
+    poetry run train-pretrained --imgsz 416
 """
 
 import argparse
 
-from common.dataset import WEIGHTS_DIR
-from common.training import train
+from plate_detection.common.dataset import WEIGHTS_DIR
+from plate_detection.common.training import train
 
 
 def main():

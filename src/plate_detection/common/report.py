@@ -9,7 +9,7 @@ import json
 
 import cv2
 
-from common.metrics import (
+from plate_detection.common.metrics import (
     IOU_MATCH_THRESHOLD,
     average_precision_50,
     classify,
@@ -17,7 +17,7 @@ from common.metrics import (
     filter_predictions,
     match_predictions,
 )
-from common.visualization import create_comparison, draw_predictions, write_gallery
+from plate_detection.common.visualization import create_comparison, draw_predictions, write_gallery
 
 
 def save_raw_predictions(records, csv_path, threshold=None, prompt=""):

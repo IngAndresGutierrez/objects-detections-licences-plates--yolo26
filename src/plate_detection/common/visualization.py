@@ -8,7 +8,7 @@ import html
 import cv2
 import numpy as np
 
-from common.metrics import IOU_MATCH_THRESHOLD
+from plate_detection.common.metrics import IOU_MATCH_THRESHOLD
 
 # Colores BGR
 COLOR_TP = (0, 200, 0)

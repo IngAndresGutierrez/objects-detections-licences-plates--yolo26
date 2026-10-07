@@ -5,10 +5,10 @@ El run final de cada enfoque se elige SOLO con validación: el de mayor
 mAP50-95 en val durante el entrenamiento (results.csv). Su best.pt es,
 a su vez, la epoch con mejor fitness en val según Ultralytics.
 
-Uso (desde la raíz del repo):
-    python -m yolo_eval.evaluate_test yolo_scratch
-    python -m yolo_eval.evaluate_test yolo_pretrained
-    python -m yolo_eval.evaluate_test yolo_scratch --run img416   # forzar un run
+Uso (desde cualquier directorio):
+    poetry run evaluate-test yolo_scratch
+    poetry run evaluate-test yolo_pretrained
+    poetry run evaluate-test yolo_scratch --run img416   # forzar un run
 """
 
 import argparse
@@ -18,9 +18,9 @@ import shutil
 import yaml
 from ultralytics import YOLO
 
-from common.dataset import DATASET_YAML, RUNS_DIR
-from common.inference import run_model
-from common.report import save_report
+from plate_detection.common.dataset import DATASET_YAML, RUNS_DIR
+from plate_detection.common.inference import run_model
+from plate_detection.common.report import save_report
 
 # Umbral por defecto de Ultralytics, fijado a priori (no se ajusta con test)
 CONFIDENCE_THRESHOLD = 0.25

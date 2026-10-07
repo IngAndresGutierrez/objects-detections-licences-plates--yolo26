@@ -5,7 +5,7 @@ porque ambos exponen el mismo model.predict de Ultralytics.
 
 import cv2
 
-from common.dataset import list_images, load_ground_truth
+from plate_detection.common.dataset import list_images, load_ground_truth
 
 # Umbral mínimo con el que se guardan TODAS las cajas y sus puntuaciones;
 # el umbral de trabajo se aplica después sobre ellas.

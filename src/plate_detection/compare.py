@@ -1,14 +1,14 @@
 """
 Tabla comparativa en test de los tres enfoques, a partir de sus metrics.json.
 
-Uso (desde la raíz del repo, después de evaluar los tres):
-    python compare.py
+Uso (desde cualquier directorio, después de evaluar los tres):
+    poetry run compare
 """
 
 import csv
 import json
 
-from common.dataset import RUNS_DIR
+from plate_detection.common.dataset import RUNS_DIR
 
 COLUMNS = [
     ("approach", "Enfoque"),

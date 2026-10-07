@@ -12,7 +12,7 @@ import torch
 from ultralytics import YOLO
 from ultralytics.utils import LOGGER
 
-from common.dataset import DATASET_YAML, RUNS_DIR
+from plate_detection.common.dataset import DATASET_YAML, RUNS_DIR
 
 # Hiperparámetros explícitos. El resto quedan en los valores por defecto
 # de Ultralytics 8.4.172 y se registran en args.yaml de cada run.

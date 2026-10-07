@@ -12,15 +12,15 @@ Flujo seguido en el proyecto:
   3. Este script: copia las imágenes a cada partición, valida las
      etiquetas y genera dataset.yaml.
 
-Uso (desde la raíz del repo):
-    python -m data_prep.prepare_dataset           # copia, valida y escribe yaml
-    python -m data_prep.prepare_dataset --check   # solo valida
+Uso (desde cualquier directorio):
+    poetry run prepare-dataset           # copia, valida y escribe yaml
+    poetry run prepare-dataset --check   # solo valida
 """
 
 import argparse
 import shutil
 
-from common.dataset import (
+from plate_detection.common.dataset import (
     CLASS_NAMES,
     DATA_DIR,
     DATASET_YAML,

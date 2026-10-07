@@ -1,12 +1,15 @@
 """
 Rutas del proyecto y lectura del dataset YOLO (una sola clase: plate).
 Las rutas son absolutas respecto a la raíz del repo para que los
-scripts funcionen desde cualquier directorio.
+scripts funcionen desde cualquier directorio. PROJECT_ROOT permite
+cambiar la raíz (en Docker apunta a /app).
 """
 
+import os
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+# src/plate_detection/common/dataset.py -> raíz del repo
+ROOT = Path(os.environ.get("PROJECT_ROOT", Path(__file__).resolve().parents[3]))
 
 DATA_DIR = ROOT / "data" / "yolo"
 DATASET_YAML = DATA_DIR / "dataset.yaml"

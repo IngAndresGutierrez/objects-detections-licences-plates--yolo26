@@ -8,23 +8,24 @@ Protocolo:
      confianza que maximiza F1 (IoU >= 0.5).
   3. Prompt y umbral quedan FIJOS y se aplican una sola vez sobre TEST.
 
-Uso (desde la raíz del repo):
-    python -m yoloe.open_vocab                    # yoloe-26s-seg.pt
-    python -m yoloe.open_vocab yoloe-26m-seg.pt
+Uso (desde cualquier directorio):
+    poetry run yoloe                    # yoloe-26s-seg.pt
+    poetry run yoloe yoloe-26m-seg.pt
 """
 
 import argparse
 import csv
 import html
 import json
+import os
 import shutil
 
 from ultralytics import YOLOE
 
-from common.dataset import RUNS_DIR, WEIGHTS_DIR
-from common.inference import run_model
-from common.metrics import average_precision_50, counts_at
-from common.report import save_raw_predictions, save_report
+from plate_detection.common.dataset import RUNS_DIR, WEIGHTS_DIR
+from plate_detection.common.inference import run_model
+from plate_detection.common.metrics import average_precision_50, counts_at
+from plate_detection.common.report import save_raw_predictions, save_report
 
 DEFAULT_MODEL = "yoloe-26s-seg.pt"
 IMAGE_SIZE = 640
@@ -110,7 +111,11 @@ def main():
     test_dir.mkdir(parents=True)
 
     # Se descarga automáticamente en weights/ si no existe.
-    # El encoder de texto (mobileclip2_b.ts) se descarga en el directorio actual.
+    # El encoder de texto (mobileclip2_b.ts) se busca y descarga en el
+    # directorio actual: se trabaja desde weights/ para dejarlo ahí también.
+    # Todas las rutas del proyecto son absolutas, así que el cambio es seguro.
+    WEIGHTS_DIR.mkdir(exist_ok=True)
+    os.chdir(WEIGHTS_DIR)
     model = YOLOE(str(WEIGHTS_DIR / model_name))
 
     # -----------------------------------
