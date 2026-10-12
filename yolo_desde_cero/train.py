@@ -4,8 +4,8 @@ definida en model/yolo26n.yaml y pesos inicializados aleatoriamente
 (sin pesos preentrenados).
 
 Uso (desde esta carpeta):
-    python train.py --imgsz 320
-    python train.py --imgsz 416
+    poetry run python train.py --imgsz 320
+    poetry run python train.py --imgsz 416
 """
 
 import argparse

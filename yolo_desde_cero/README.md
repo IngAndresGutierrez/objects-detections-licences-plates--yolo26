@@ -12,7 +12,9 @@ pesos finales, registros y curvas de entrenamiento, y evaluación en test.
 ```
 yolo_desde_cero/
 ├── README.md
-├── requirements.txt
+├── pyproject.toml / poetry.lock  # dependencias (Poetry, Python 3.12, torch solo CPU)
+├── poetry.toml               # el entorno virtual se crea en .venv/
+├── Dockerfile / docker-compose.yml / .dockerignore
 ├── prepare_dataset.py        # preparación y validación del dataset
 ├── train.py                  # entrenamiento desde cero
 ├── evaluate_test.py          # selección del run en val + evaluación en test
@@ -33,27 +35,52 @@ yolo_desde_cero/
 
 ## Dependencias
 
-Probado con **Python 3.9.6**, macOS, **CPU** (Apple M5).
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+Resultados obtenidos en macOS, **CPU** (Apple M5). Las dependencias se
+gestionan con Poetry (Python 3.12, `torch` solo CPU) y también se puede
+ejecutar todo en Docker.
 
 Principales: `ultralytics==8.4.172`, `torch==2.8.0`, `opencv-python==4.11.0.86`.
 No hace falta descargar pesos: el modelo parte de una arquitectura vacía.
+
+### Opción A: Poetry (local)
+
+Requiere [Poetry](https://python-poetry.org/docs/#installation) ≥ 2.0 y Python 3.12.
+
+```bash
+poetry env use python3.12   # solo la primera vez, si python3.12 no es el predeterminado
+poetry install              # crea .venv/ e instala las dependencias
+```
+
+### Opción B: Docker
+
+Requiere Docker con Compose. `data/` y `runs/` se montan como volúmenes, así
+que los resultados quedan en tu carpeta local. Dentro de Docker todo corre en
+CPU.
+
+```bash
+docker compose build
+```
 
 ## Ejecución
 
 Desde esta carpeta:
 
 ```bash
-python prepare_dataset.py          # 1. preparar y validar el dataset
-python train.py --imgsz 320        # 2. entrenar (~2 min en CPU)
-python train.py --imgsz 416
-python evaluate_test.py            # 3. elegir el run por val y evaluar en test
+poetry run python prepare_dataset.py   # 1. preparar y validar el dataset
+poetry run python train.py --imgsz 320 # 2. entrenar (~2 min en CPU)
+poetry run python train.py --imgsz 416
+poetry run python evaluate_test.py     # 3. elegir el run por val y evaluar en test
 ```
+
+Con Docker se sustituye `poetry run` por `docker compose run --rm app`, por
+ejemplo:
+
+```bash
+docker compose run --rm app python train.py --imgsz 320
+```
+
+En Docker, `prepare_dataset.py` valida las imágenes ya copiadas en `data/images/`
+(las originales de `../data/voc/images` no se montan).
 
 ---
 

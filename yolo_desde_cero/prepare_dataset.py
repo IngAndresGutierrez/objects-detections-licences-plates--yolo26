@@ -13,9 +13,9 @@ Flujo seguido:
      etiquetas y genera data/dataset.yaml.
 
 Uso (desde esta carpeta):
-    python prepare_dataset.py                       # copia, valida y escribe yaml
-    python prepare_dataset.py --source <carpeta>    # otra ubicación de las originales
-    python prepare_dataset.py --check               # solo valida
+    poetry run python prepare_dataset.py            # copia, valida y escribe yaml
+    poetry run python prepare_dataset.py --source <carpeta>    # otra ubicación de las originales
+    poetry run python prepare_dataset.py --check               # solo valida
 """
 
 import argparse

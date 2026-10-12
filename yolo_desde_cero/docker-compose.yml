@@ -1,0 +1,11 @@
+# Uso: docker compose run --rm app python <script> [args]
+#   docker compose run --rm app python train.py --imgsz 320
+services:
+  app:
+    build: .
+    image: yolo-desde-cero:latest
+    volumes:
+      - ./data:/app/data
+      - ./runs:/app/runs
+    # Los dataloaders de PyTorch usan memoria compartida
+    shm_size: 2gb

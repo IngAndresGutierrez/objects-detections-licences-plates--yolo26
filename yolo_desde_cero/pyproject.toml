@@ -1,0 +1,40 @@
+[project]
+name = "yolo-desde-cero"
+version = "0.1.0"
+description = "YOLO26n entrenado desde cero para detección de matrículas"
+readme = "README.md"
+# numpy 1.26 no tiene wheels para 3.13
+requires-python = ">=3.12,<3.13"
+# Mismas versiones con las que se obtuvieron los resultados del README
+dependencies = [
+    "ultralytics==8.4.172",
+    "torch==2.8.0",
+    "torchvision==0.23.0",
+    "opencv-python==4.11.0.86",
+    "numpy==1.26.4",
+    "matplotlib==3.9.4",
+    "PyYAML==6.0.3",
+]
+
+# Solo se gestionan dependencias: los scripts se lanzan con poetry run python <script>
+[tool.poetry]
+package-mode = false
+
+# torch/torchvision solo CPU (sin CUDA): imagen Docker mucho más ligera.
+# En macOS el wheel de PyPI ya es solo CPU/MPS; el índice CPU no tiene +cpu para Mac.
+# torchvision +cpu solo existe para x86_64/Windows; en Linux ARM (Docker en Mac M)
+# se usa el de PyPI, que solo depende de torch (que sí viene del índice CPU).
+[[tool.poetry.source]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
+
+[tool.poetry.dependencies]
+torch = [
+    { markers = "sys_platform == 'darwin'", source = "pypi" },
+    { markers = "sys_platform != 'darwin'", source = "pytorch-cpu" },
+]
+torchvision = [
+    { markers = "sys_platform == 'win32' or (sys_platform == 'linux' and platform_machine == 'x86_64')", source = "pytorch-cpu" },
+    { markers = "sys_platform == 'darwin' or (sys_platform == 'linux' and platform_machine != 'x86_64')", source = "pypi" },
+]

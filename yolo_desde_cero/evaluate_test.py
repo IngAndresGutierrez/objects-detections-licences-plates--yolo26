@@ -9,8 +9,8 @@ Guarda en runs/test/<run>/: cajas y puntuaciones, imágenes anotadas,
 comparaciones original | predicción, métricas y una galería HTML.
 
 Uso (desde esta carpeta):
-    python evaluate_test.py
-    python evaluate_test.py --run img416   # forzar un run concreto
+    poetry run python evaluate_test.py
+    poetry run python evaluate_test.py --run img416   # forzar un run concreto
 """
 
 import argparse
